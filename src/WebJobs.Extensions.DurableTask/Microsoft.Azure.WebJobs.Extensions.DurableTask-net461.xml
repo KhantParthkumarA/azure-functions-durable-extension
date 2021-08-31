@@ -2602,7 +2602,7 @@
         </member>
         <member name="T:Microsoft.Azure.WebJobs.Extensions.DurableTask.RequestMessage">
             <summary>
-            A message that represents an operation request or a lock request.
+            A message send to an entity, such as operation, signal, lock, release, or continue messages.
             </summary>
         </member>
         <member name="P:Microsoft.Azure.WebJobs.Extensions.DurableTask.RequestMessage.Operation">
@@ -2687,6 +2687,11 @@
         <member name="P:Microsoft.Azure.WebJobs.Extensions.DurableTask.SchedulerState.LockedBy">
             <summary>
             The instance id of the orchestration that currently holds the lock of this entity.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.WebJobs.Extensions.DurableTask.SchedulerState.Suspended">
+            <summary>
+            Whether processing on this entity is currently suspended.
             </summary>
         </member>
         <member name="P:Microsoft.Azure.WebJobs.Extensions.DurableTask.SchedulerState.MessageSorter">
@@ -3622,6 +3627,18 @@
               </item>
             </list>
             </remarks>
+        </member>
+        <member name="P:Microsoft.Azure.WebJobs.Extensions.DurableTask.DurableTaskOptions.MaxEntityOperationBatchSize">
+            <summary>
+            Gets or sets the maximum number of entity operations that are processed as a single batch.
+            </summary>
+            <remarks>
+            Reducing this number can help to avoid timeouts on consumption plans. If set to 1, batching is disabled, and each operation
+            message executes and is billed as a separate function invocation.
+            </remarks>
+            <value>
+            A positive integer configured by the host.
+            </value>
         </member>
         <member name="P:Microsoft.Azure.WebJobs.Extensions.DurableTask.DurableTaskOptions.ExtendedSessionsEnabled">
             <summary>

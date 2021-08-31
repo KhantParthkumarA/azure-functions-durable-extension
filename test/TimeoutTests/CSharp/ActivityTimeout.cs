@@ -27,10 +27,6 @@ namespace TimeoutTests
             {
                 return "Test succeeded";
             }
-            catch (Microsoft.Azure.WebJobs.Host.FunctionTimeoutException)
-            {
-                return "Test succeeded";
-            }
             catch (Exception e)
             {
                 return $"Test failed: wrong exception thrown: {e}";

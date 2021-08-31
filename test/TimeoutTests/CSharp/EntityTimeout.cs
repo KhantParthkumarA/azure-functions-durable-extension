@@ -18,6 +18,27 @@ namespace TimeoutTests
         {
             var entityId = new EntityId(nameof(SlowEntity), context.InstanceId);
 
+            try
+            {
+                int result = await context.CallEntityAsync<int>(entityId, "Go", 180);
+                return "Test failed: no exception thrown";
+            }
+            catch (Microsoft.Azure.WebJobs.Host.FunctionTimeoutException)
+            {
+                return "Test succeeded";
+            }
+            catch (Exception e)
+            {
+                return $"Test failed: wrong exception thrown: {e}";
+            }
+        }
+
+
+        [FunctionName(nameof(EntityTimeout2))]
+        public static async Task<string> EntityTimeout2([OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
+        {
+            var entityId = new EntityId(nameof(SlowEntity), context.InstanceId);
+
             context.SignalEntity(entityId, "Go", 0); // count = 1
             context.SignalEntity(entityId, "Go", 0); // count = 2
             context.SignalEntity(entityId, "Go", 3 * 60); // times out, so count is not incremented
@@ -37,8 +58,8 @@ namespace TimeoutTests
         }
 
 
-        [FunctionName(nameof(EntityTimeout2))]
-        public static async Task<string> EntityTimeout2([OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
+        [FunctionName(nameof(EntityTimeout3))]
+        public static async Task<string> EntityTimeout3([OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
         {
             var entityId = new EntityId(nameof(SlowEntity), context.InstanceId);
 
